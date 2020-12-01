@@ -26,7 +26,7 @@ interface Day {
             }
 
             val response = get(
-                url = "http://adventofcode.com/2019/day/$day/input",
+                url = "http://adventofcode.com/2020/day/$day/input", // TODO lol this fucked me on the first
                 cookies = mapOf("session" to sessionFile.readText())
             )
 

@@ -133,6 +133,24 @@ fun <T> T.solution(part: Int) {
         checkSolution(part, this.toString() )
 }
 
+fun <E,F> Sequence<E>.allPairings(with: Iterable<F>): Sequence<Pair<E,F>> {
+    return this
+        .flatMap {first ->
+            with
+                .asSequence()
+                .map {first to it }
+        }
+}
+fun <E,F> Iterable<E>.allPairings(with: Iterable<F>): Sequence<Pair<E,F>> {
+    return this
+        .asSequence()
+        .flatMap {first ->
+            with
+                .asSequence()
+                .map {first to it }
+        }
+}
+
 fun <E> List<E>.allPairings(
     includeSelf: Boolean = false,
     bothDirections: Boolean = true
