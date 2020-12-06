@@ -277,6 +277,10 @@ fun Pair<Int, Int>.neightbours(): List<Pair<Int, Int>> {
     )
 }
 
+fun Iterable<String>.splitAtEmptyLine(): Iterable<Iterable<String>> {
+    return this.splitAt{it == ""}
+}
+
 fun <T> Iterable<T>.splitAt(predicate: (T) -> Boolean): Iterable<Iterable<T>> {
     return this.fold(mutableListOf(mutableListOf<T>())) { lists, element ->
         if (predicate(element)) {
