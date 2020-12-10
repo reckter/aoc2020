@@ -53,7 +53,7 @@ fun Long.logTime(solution: String) {
 private fun Double.scale(scale: Int) =
     this.toBigDecimal().setScale(scale, RoundingMode.HALF_UP).toString()
 
-fun <T: Day>solve(
+fun <T : Day> solve(
     enablePartOne: Boolean = true,
     enablePartTwo: Boolean = true,
     clazz: Class<T>
@@ -85,6 +85,7 @@ fun readLines(file: String): List<String> {
 }
 
 fun List<String>.toIntegers(): List<Int> = this.map { it.toInt() }
+fun List<String>.toLongs(): List<Long> = this.map { it.toLong() }
 
 fun List<String>.toBigIntegers(): List<BigInteger> = this.map { it.toBigInteger() }
 
@@ -130,24 +131,25 @@ fun <T> T.solution(part: Int) {
         saveSolution(part, this.toString())
 
     if (Context.testMode)
-        checkSolution(part, this.toString() )
+        checkSolution(part, this.toString())
 }
 
-fun <E,F> Sequence<E>.allPairings(with: Iterable<F>): Sequence<Pair<E,F>> {
+fun <E, F> Sequence<E>.allPairings(with: Iterable<F>): Sequence<Pair<E, F>> {
     return this
-        .flatMap {first ->
+        .flatMap { first ->
             with
                 .asSequence()
-                .map {first to it }
+                .map { first to it }
         }
 }
-fun <E,F> Iterable<E>.allPairings(with: Iterable<F>): Sequence<Pair<E,F>> {
+
+fun <E, F> Iterable<E>.allPairings(with: Iterable<F>): Sequence<Pair<E, F>> {
     return this
         .asSequence()
-        .flatMap {first ->
+        .flatMap { first ->
             with
                 .asSequence()
-                .map {first to it }
+                .map { first to it }
         }
 }
 
@@ -257,8 +259,7 @@ fun <E> channelOf(vararg values: E): Channel<E> {
     return channel
 }
 
-fun <E> List<E>.padStart(size: Int, padWith: E)
-    = (0 until size - this.size).map { padWith } + this
+fun <E> List<E>.padStart(size: Int, padWith: E) = (0 until size - this.size).map { padWith } + this
 
 fun <E> E.repeatToSequence(times: Int) = this.repeatToSequence(times.toLong())
 
@@ -278,7 +279,7 @@ fun Pair<Int, Int>.neightbours(): List<Pair<Int, Int>> {
 }
 
 fun Iterable<String>.splitAtEmptyLine(): Iterable<Iterable<String>> {
-    return this.splitAt{it == ""}
+    return this.splitAt { it == "" }
 }
 
 fun <T> Iterable<T>.splitAt(predicate: (T) -> Boolean): Iterable<Iterable<T>> {
@@ -290,4 +291,8 @@ fun <T> Iterable<T>.splitAt(predicate: (T) -> Boolean): Iterable<Iterable<T>> {
         }
         lists
     }
+}
+
+fun <T> List<T>.runsOfLength(length: Int): List<List<T>> {
+    return this.mapIndexed { index, it -> (this.drop(index) + this.takeLast(index)).take(length) }
 }
