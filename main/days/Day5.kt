@@ -30,7 +30,6 @@ class Day5 : Day {
                 }
             }
 
-        println("$pass: $row $column")
         return row * 8 + column
     }
     override fun solvePart1() {
