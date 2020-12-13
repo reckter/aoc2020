@@ -296,3 +296,7 @@ fun <T> Iterable<T>.splitAt(predicate: (T) -> Boolean): Iterable<Iterable<T>> {
 fun <T> List<T>.runsOfLength(length: Int): List<List<T>> {
     return this.mapIndexed { index, it -> (this.drop(index) + this.takeLast(index)).take(length) }
 }
+
+// from https://rosettacode.org/wiki/Least_common_multiple#Kotlin
+fun gcd(a: Long, b: Long): Long = if (b == 0L) a else gcd(b, a % b)
+fun lcm(a: Long, b: Long): Long = a / gcd(a, b) * b
