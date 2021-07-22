@@ -13,7 +13,7 @@ class Day10 : Day {
     override fun solvePart1() {
         loadInput()
             .toIntegers()
-            .let { it + listOf((it.max() ?: error("")) + 3, 0) }
+            .let { it + listOf((it.maxOrNull() ?: error("")) + 3, 0) }
             .sorted()
             .zipWithNext()
             .map { (a, b) -> b - a }
@@ -27,21 +27,21 @@ class Day10 : Day {
         val input = loadInput()
             .toIntegers()
             .sorted()
-        val max = (input.max() ?: error("no max!")) + 3
+        val max = (input.maxOrNull() ?: error("no max!")) + 3
 
         val chain = (input + listOf(0, max)).sorted()
 
         chain
             .reversed()
-            .fold(mapOf(max to 1L), { cache, current ->
-               val possibilities = cache
-                   .entries
-                   .filter { it.key - 3 <= current }
-                   .map { it.value }
-                   .sum()
+            .fold(mapOf(max to 1L)) { cache, current ->
+                val possibilities = cache
+                    .entries
+                    .filter { it.key - 3 <= current }
+                    .map { it.value }
+                    .sum()
 
                 cache + (current to possibilities)
-            })
+            }
             .get(0)
             .solution(2)
 

@@ -15,7 +15,7 @@ class Day15 : Day {
             .toIntegers()
         val map =
             turns
-                .mapIndexed { index, it -> it to ((index + 1) to -1) }
+                .mapIndexed { index, it -> it to mutableListOf(index + 1,-1) }
                 .toMap()
                 .toMutableMap()
         val currentTurn = turns.size
@@ -28,25 +28,25 @@ class Day15 : Day {
     }
 
     data class State(
-        val lastPositions: MutableMap<Int, Pair<Int,Int>>,
+        val lastPositions: MutableMap<Int, MutableList<Int>>,
         val currentTurn: Int,
         val lastNumber: Int
     )
 
-    fun Pair<Int, Int>.next(lastPositions: MutableMap<Int, Pair<Int, Int>>): Pair<Int, Int> {
+    fun Pair<Int, Int>.next(lastPositions: MutableMap<Int, MutableList<Int>>): Pair<Int, Int> {
         val (currentTurn, lastNumber) = this
         val turn = currentTurn + 1
         val lastSpokenList = lastPositions[lastNumber] ?: error("this cant happen")
-        if (lastSpokenList.second > -1) {
-            val nextNumber = currentTurn - lastSpokenList.second
-            val lastSpokenAt = lastPositions[nextNumber]?.first ?: -1
-            val nextNumberSpokenAt = turn to lastSpokenAt
-            lastPositions[nextNumber] = nextNumberSpokenAt
-
+        if (lastSpokenList[1] > -1) {
+            val nextNumber = currentTurn - lastSpokenList[1]
+            val saved = lastPositions.getOrPut(nextNumber) { mutableListOf(-1,-1)}
+            saved[1] = saved[0]
+            saved[0] = turn
             return turn to nextNumber
         }
-        val nextNumberSpokenAt = lastPositions[0]?.first ?: -1
-        lastPositions[0] = turn to nextNumberSpokenAt
+
+        val nextNumberSpokenAt = lastPositions[0]?.getOrNull(0) ?: -1
+        lastPositions[0] = mutableListOf(turn,nextNumberSpokenAt)
         return turn to 0
     }
 

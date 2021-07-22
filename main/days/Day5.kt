@@ -35,7 +35,7 @@ class Day5 : Day {
     override fun solvePart1() {
         loadInput()
             .map { getSeatId(it) }
-            .max()
+            .maxOrNull()
             .solution(1)
 
     }

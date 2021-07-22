@@ -207,7 +207,7 @@ fun hammingDistance(a: String, b: String) =
         .count { (a, b) -> a != b } +
             a.length - b.length
 
-fun <E> LinkedList<E>.rotate(by: Int) {
+fun <E> LinkedList<E>.rotateRight(by: Int) {
     when {
         by < 0 ->
             repeat(-by) {
@@ -297,6 +297,33 @@ fun <T> List<T>.runsOfLength(length: Int): List<List<T>> {
     return this.mapIndexed { index, it -> (this.drop(index) + this.takeLast(index)).take(length) }
 }
 
+fun <T> List<T>.rotateRight(by: Int = 1): List<T> {
+    return this.takeLast(by % this.size) + this.dropLast(by % this.size)
+}
+
+fun <T> List<T>.rotateLeft(by: Int = 1): List<T> {
+    return this.drop(by % this.size) + this.take(by % this.size)
+}
+
 // from https://rosettacode.org/wiki/Least_common_multiple#Kotlin
 fun gcd(a: Long, b: Long): Long = if (b == 0L) a else gcd(b, a % b)
 fun lcm(a: Long, b: Long): Long = a / gcd(a, b) * b
+
+fun fastExp(aBase: Long, aExponent: Long, module: Long): Long {
+
+    var base = aBase
+    var exponent = aExponent
+    var result = 1L
+    if(exponent % 2 == 1L) {
+        result = base
+    }
+
+    while(exponent !== 0L) {
+        exponent = exponent shr 1
+        base = (base * base) % module
+        if(exponent % 2 == 1L)
+        result = (result * base) % module
+
+    }
+    return result
+}
